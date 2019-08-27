@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>My First React App</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+        function Grettings(props) {
+            const { firstName } = props
+            const gretting = 'Morning';
+            return (
+                <div>
+                    Welcome {firstName},
+                    Good {gretting}!
+                </div>
+            )
+        }
+
+        
+        class CurrentTime extends React.Component {
+            constructor(props) {
+                super(props)
+
+                this.state = {
+                    time: '-'
+                }
+            }
+
+            componentDidMount() {
+               this.interval = setInterval(() => {
+                    this.setState({
+                        time: new Date().toISOString()
+                    })
+                }, 1000);
+            }
+
+            componentWillUnmount(){
+                clearInterval(this.interval);
+            }
+
+            render () {
+                const { time } = this.state
+                return (
+                    <div>
+                        <div>Current Time: </div>
+                        <div>{time}</div>
+                    </div>
+                )
+            }
+        }
+
+        function HomePage(props) {
+            const { user: {firstName, lastName } } = props;
+            return (
+                <div>
+                    <Grettings firstName={firstName} />
+                    <br/>
+                    <CurrentTime />
+                </div>
+            );
+        }
+
+        const user = { firstName: "Kaushik", lastName: 'Savaliya' };
+        setTimeout(() => {
+            user.firstName = 'Kapil';
+            ReactDOM.render(<HomePage user={user}/>, document.getElementById('root'));
+        }, 5000);
+        ReactDOM.render(<HomePage user={user}/>, document.getElementById('root'));
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>
